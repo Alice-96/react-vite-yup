@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Page from './Page';
+import { Typography } from '@mui/material';
 
 interface FormikValuesProps {
   firstName: string;
@@ -25,38 +27,37 @@ const YupTrial: React.FC = () => {
   });
 
   return (
-    <>
-      <div className="App">
-        <header className="App-header">
-          <div>
-            <label htmlFor="firstName">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-            />
+    <Page>
+      <Typography component="h2" variant="h6" color="primary">
+        Simple Yup
+      </Typography>
+      <div>
+        <label htmlFor="firstName">First Name</label>
+        <input
+          type="text"
+          name="firstName"
+          value={formik.values.firstName}
+          onChange={formik.handleChange}
+        />
 
-            <p style={{ color: 'red', fontSize: '8px' }}>
-              {formik.errors.firstName}
-            </p>
-          </div>
-          <div>
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-            />
-
-            <p style={{ color: 'red', fontSize: '8px' }}>
-              {formik.errors.lastName}
-            </p>
-          </div>
-        </header>
+        <p style={{ color: 'red', fontSize: '8px' }}>
+          {formik.errors.firstName}
+        </p>
       </div>
-    </>
+      <div>
+        <label htmlFor="lastName">Last Name</label>
+        <input
+          type="text"
+          name="lastName"
+          value={formik.values.lastName}
+          onChange={formik.handleChange}
+        />
+
+        <p style={{ color: 'red', fontSize: '8px' }}>
+          {formik.errors.lastName}
+        </p>
+      </div>
+    </Page>
   );
 };
 
