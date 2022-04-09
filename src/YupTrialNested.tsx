@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import Page from './Page';
+import { Typography } from '@mui/material';
 interface FormikValuesProps {
   name: string;
   type: string;
@@ -32,51 +33,45 @@ const YupTrialNestedNested: React.FC = () => {
   });
 
   return (
-    <>
-      <div className="App">
-        <header className="App-header">
-          <div>
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-            />
+    <Page>
+      <Typography component="h2" variant="h6" color="primary">
+        Nested Yup
+      </Typography>
+      <div>
+        <label htmlFor="name">Name</label>
+        <input
+          type="text"
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+        />
 
-            <p style={{ color: 'red', fontSize: '8px' }}>
-              {formik.errors.name}
-            </p>
-          </div>
-          <div>
-            <label htmlFor="type">Type</label>
-            <input
-              type="text"
-              name="type"
-              value={formik.values.type}
-              onChange={formik.handleChange}
-            />
-
-            <p style={{ color: 'red', fontSize: '8px' }}>
-              {formik.errors.type}
-            </p>
-          </div>
-          <div>
-            <label htmlFor="type">AreaInfo.Area</label>
-            <input
-              type="text"
-              name="areaInfo.area"
-              value={formik.values.areaInfo.area}
-              onChange={formik.handleChange}
-            />
-
-            <p style={{ color: 'red', fontSize: '8px' }}>
-              {formik.errors.areaInfo?.area}
-            </p>
-          </div>
-        </header>
+        <p style={{ color: 'red', fontSize: '8px' }}>{formik.errors.name}</p>
       </div>
-    </>
+      <div>
+        <label htmlFor="type">Type</label>
+        <input
+          type="text"
+          name="type"
+          value={formik.values.type}
+          onChange={formik.handleChange}
+        />
+
+        <p style={{ color: 'red', fontSize: '8px' }}>{formik.errors.type}</p>
+      </div>
+      <div>
+        <label htmlFor="type">AreaInfo.Area</label>
+        <input
+          type="text"
+          name="areaInfo.area"
+          value={formik.values.areaInfo.area}
+          onChange={formik.handleChange}
+        />
+        <p style={{ color: 'red', fontSize: '8px' }}>
+          {formik.errors.areaInfo?.area}
+        </p>
+      </div>
+    </Page>
   );
 };
 
