@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
-import Page from './Page';
+import Page from './components/Page';
 
 const Top: React.FC = () => {
   return (

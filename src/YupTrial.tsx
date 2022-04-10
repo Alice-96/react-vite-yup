@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Page from './Page';
+import Page from './components/Page';
 import { Button, Stack, TextField, Typography } from '@mui/material';
 
 interface FormikValuesProps {
