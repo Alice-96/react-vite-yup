@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
-import '../index.css';
 
 const Page: React.FC = ({ children }) => {
   console.log(children);

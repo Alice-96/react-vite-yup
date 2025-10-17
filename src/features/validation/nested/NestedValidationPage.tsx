@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Page from './components/Page';
+import Page from '../../../shared/components/Page';
 import { Typography } from '@mui/material';
+
 interface FormikValuesProps {
   name: string;
   type: string;
   areaInfo: { area: string };
 }
 
-const YupTrialNestedNestedPage: React.FC = () => {
+const NestedValidationPage: React.FC = () => {
   const validationSchema = useMemo(() => {
     return Yup.object().shape({
       name: Yup.string().required('必須項目です'),
@@ -75,4 +76,4 @@ const YupTrialNestedNestedPage: React.FC = () => {
   );
 };
 
-export default YupTrialNestedNestedPage;
+export default NestedValidationPage;
