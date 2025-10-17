@@ -12,13 +12,13 @@ const HomePage: React.FC = () => {
       </Typography>
       <div>
         <div>
-          <Link to="/yup">yup</Link>
+          <Link to="/user-registration">ユーザー登録</Link>
         </div>
         <div>
-          <Link to="/yupNested">yupNested</Link>
+          <Link to="/location-registration">拠点登録</Link>
         </div>
         <div>
-          <Link to="/userList">ユーザー一覧</Link>
+          <Link to="/user-list">ユーザー一覧</Link>
         </div>
       </div>
     </Page>

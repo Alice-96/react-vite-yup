@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HomePage, BasicValidationPage, NestedValidationPage, UserListPage } from './features';
+import { HomePage, UserListPage, UserRegistrationPage, LocationRegistrationPage } from './features';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/yup" element={<BasicValidationPage />} />
-        <Route path="/yupNested" element={<NestedValidationPage />} />
-        <Route path="/userList" element={<UserListPage />} />
+        <Route path="/user-registration" element={<UserRegistrationPage />} />
+        <Route path="/location-registration" element={<LocationRegistrationPage />} />
+        <Route path="/user-list" element={<UserListPage />} />
       </Routes>
     </BrowserRouter>
   );
