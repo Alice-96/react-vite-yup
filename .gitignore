@@ -25,3 +25,7 @@ dist-ssr
 
 # doc
 memo.md
+
+# Environment variables
+.env.local
+.env.*.local
