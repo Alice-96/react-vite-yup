@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HomePage, BasicValidationPage, NestedValidationPage } from './features';
+import { HomePage, BasicValidationPage, NestedValidationPage, UserListPage } from './features';
 
 function App() {
   return (
@@ -8,6 +8,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/yup" element={<BasicValidationPage />} />
         <Route path="/yupNested" element={<NestedValidationPage />} />
+        <Route path="/userList" element={<UserListPage />} />
       </Routes>
     </BrowserRouter>
   );
