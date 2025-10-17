@@ -11,7 +11,9 @@
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "deploy:s3": "aws s3 sync dist/ s3://$S3_BUCKET_NAME --delete --cache-control max-age=31536000,public",
+    "deploy:s3:index": "aws s3 cp dist/index.html s3://$S3_BUCKET_NAME/index.html --cache-control max-age=0,no-cache,no-store,must-revalidate"
   },
   "dependencies": {
     "@emotion/react": "^11.8.2",
