@@ -12,16 +12,20 @@ interface FormikValuesProps {
   age: number | null;
 }
 
-const BasicValidationPage: React.FC = () => {
+const UserRegistrationPage: React.FC = () => {
   const validationSchema = useMemo(() => {
     return Yup.object().shape({
-      firstName: Yup.string().required('必須項目です'),
-      lastName: Yup.string().required('必須項目です'),
-      email: Yup.string().required('必須項目です'),
-      password: Yup.string().required('必須項目です'),
+      firstName: Yup.string().required('姓を入力してください'),
+      lastName: Yup.string().required('名を入力してください'),
+      email: Yup.string()
+        .email('有効なメールアドレスを入力してください')
+        .required('メールアドレスを入力してください'),
+      password: Yup.string()
+        .min(8, 'パスワードは8文字以上で入力してください')
+        .required('パスワードを入力してください'),
       age: Yup.number()
-        .min(0, '適切な値を入力してください')
-        .max(130, '適切な値を入力してください')
+        .min(0, '0歳以上で入力してください')
+        .max(130, '130歳以下で入力してください')
         .nullable(),
     });
   }, []);
@@ -41,7 +45,7 @@ const BasicValidationPage: React.FC = () => {
   return (
     <Page>
       <Typography component="h2" variant="h6" color="primary">
-        Simple Yup
+        ユーザー登録
       </Typography>
       <Stack spacing={2}>
         <Stack direction="row" spacing={2}>
@@ -49,7 +53,7 @@ const BasicValidationPage: React.FC = () => {
             fullWidth
             id="firstName"
             name="firstName"
-            label="firstName"
+            label="姓"
             variant="standard"
             sx={{ width: '200px' }}
             value={formik.values.firstName}
@@ -61,7 +65,7 @@ const BasicValidationPage: React.FC = () => {
             fullWidth
             id="lastName"
             name="lastName"
-            label="lastName"
+            label="名"
             variant="standard"
             sx={{ width: '200px' }}
             value={formik.values.lastName}
@@ -73,7 +77,7 @@ const BasicValidationPage: React.FC = () => {
             fullWidth
             id="age"
             name="age"
-            label="age"
+            label="年齢"
             variant="standard"
             sx={{ width: '100px' }}
             value={formik.values.age}
@@ -86,7 +90,7 @@ const BasicValidationPage: React.FC = () => {
           <TextField
             id="email"
             name="email"
-            label="Email"
+            label="メールアドレス"
             variant="standard"
             sx={{ width: '300px' }}
             value={formik.values.email}
@@ -97,7 +101,7 @@ const BasicValidationPage: React.FC = () => {
           <TextField
             id="password"
             name="password"
-            label="Password"
+            label="パスワード"
             type="password"
             variant="standard"
             value={formik.values.password}
@@ -113,11 +117,11 @@ const BasicValidationPage: React.FC = () => {
           type="submit"
           onClick={() => formik.handleSubmit()}
         >
-          Submit
+          登録
         </Button>
       </Stack>
     </Page>
   );
 };
 
-export default BasicValidationPage;
+export default UserRegistrationPage;
