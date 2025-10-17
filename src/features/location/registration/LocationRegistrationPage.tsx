@@ -2,7 +2,16 @@ import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Page from '../../../shared/components/Page';
-import { Button, Stack, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
 
 interface FormikValuesProps {
   name: string;
@@ -18,7 +27,10 @@ const LocationRegistrationPage: React.FC = () => {
       areaInfo: Yup.object().when(['type'], {
         is: (type: string) => type === 'A',
         then: () => Yup.object({ area: Yup.string() }),
-        otherwise: () => Yup.object({ area: Yup.string().required('エリアを入力してください') }),
+        otherwise: () =>
+          Yup.object({
+            area: Yup.string().required('エリアを入力してください'),
+          }),
       }),
     });
   }, []);
@@ -50,8 +62,12 @@ const LocationRegistrationPage: React.FC = () => {
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
-        
-        <FormControl variant="standard" fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
+
+        <FormControl
+          variant="standard"
+          fullWidth
+          error={formik.touched.type && Boolean(formik.errors.type)}
+        >
           <InputLabel id="type-label">拠点タイプ</InputLabel>
           <Select
             labelId="type-label"
@@ -80,8 +96,13 @@ const LocationRegistrationPage: React.FC = () => {
           variant="standard"
           value={formik.values.areaInfo.area}
           onChange={formik.handleChange}
-          error={formik.touched.areaInfo?.area && Boolean(formik.errors.areaInfo?.area)}
-          helperText={formik.touched.areaInfo?.area && formik.errors.areaInfo?.area}
+          error={
+            formik.touched.areaInfo?.area &&
+            Boolean(formik.errors.areaInfo?.area)
+          }
+          helperText={
+            formik.touched.areaInfo?.area && formik.errors.areaInfo?.area
+          }
           disabled={formik.values.type === 'A'}
         />
 
