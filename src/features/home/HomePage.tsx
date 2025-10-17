@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './index.css';
-import Page from './components/Page';
+import '../../shared/styles/index.css';
+import Page from '../../shared/components/Page';
 
-const Top: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
     <Page>
       <Typography component="h2" variant="h6" color="primary">
@@ -22,4 +22,4 @@ const Top: React.FC = () => {
   );
 };
 
-export default Top;
+export default HomePage;

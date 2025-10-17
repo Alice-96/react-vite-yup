@@ -1,15 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import TopPage from './TopPage';
-import YupTrialPage from './YupTrialPage';
-import YupTrialNestedPage from './YupTrialNestedPage';
+import { HomePage, BasicValidationPage, NestedValidationPage } from './features';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TopPage />} />
-        <Route path="/yup" element={<YupTrialPage />} />
-        <Route path="/yupNested" element={<YupTrialNestedPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/yup" element={<BasicValidationPage />} />
+        <Route path="/yupNested" element={<NestedValidationPage />} />
       </Routes>
     </BrowserRouter>
   );

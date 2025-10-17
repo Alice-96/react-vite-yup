@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Page from './components/Page';
+import Page from '../../../shared/components/Page';
 import { Button, Stack, TextField, Typography } from '@mui/material';
 
 interface FormikValuesProps {
@@ -12,7 +12,7 @@ interface FormikValuesProps {
   age: number | null;
 }
 
-const YupTrial: React.FC = () => {
+const BasicValidationPage: React.FC = () => {
   const validationSchema = useMemo(() => {
     return Yup.object().shape({
       firstName: Yup.string().required('必須項目です'),
@@ -120,4 +120,4 @@ const YupTrial: React.FC = () => {
   );
 };
 
-export default YupTrial;
+export default BasicValidationPage;
