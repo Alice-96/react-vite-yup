@@ -34,7 +34,7 @@ const Page: React.FC = ({ children }) => {
             p: 2,
             display: 'flex',
             flexDirection: 'column',
-            height: 240,
+            minHeight: 240,
           }}
         >
           {children}
