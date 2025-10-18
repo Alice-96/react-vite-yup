@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import Page from '../../../shared/components/Page';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import React, { useMemo } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import Page from '../../../shared/components/Page'
+import { Button, Stack, TextField, Typography } from '@mui/material'
 
 interface FormikValuesProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  age: number | null;
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  age: number | null
 }
 
 const UserRegistrationPage: React.FC = () => {
@@ -27,8 +27,8 @@ const UserRegistrationPage: React.FC = () => {
         .min(0, '0歳以上で入力してください')
         .max(130, '130歳以下で入力してください')
         .nullable(),
-    });
-  }, []);
+    })
+  }, [])
 
   const formik = useFormik<FormikValuesProps>({
     initialValues: {
@@ -40,7 +40,7 @@ const UserRegistrationPage: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: () => {},
-  });
+  })
 
   return (
     <Page>
@@ -121,7 +121,7 @@ const UserRegistrationPage: React.FC = () => {
         </Button>
       </Stack>
     </Page>
-  );
-};
+  )
+}
 
-export default UserRegistrationPage;
+export default UserRegistrationPage

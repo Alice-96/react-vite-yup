@@ -1,1 +1,1 @@
-export { default as LocationRegistrationPage } from './LocationRegistrationPage';
+export { default as LocationRegistrationPage } from './LocationRegistrationPage'

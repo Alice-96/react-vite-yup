@@ -5,12 +5,12 @@ import {
   Toolbar,
   Typography,
   IconButton,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import React from 'react';
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import React from 'react'
 
 interface PageProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Page: React.FC<PageProps> = ({ children }) => {
@@ -44,7 +44,7 @@ const Page: React.FC<PageProps> = ({ children }) => {
         </Paper>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
