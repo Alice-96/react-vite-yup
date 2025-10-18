@@ -17,17 +17,30 @@ describe('HomePage', () => {
 
   it('should render all navigation links', () => {
     renderWithRouter(<HomePage />)
-    
-    expect(screen.getByRole('link', { name: 'ユーザー登録' })).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('link', { name: 'ユーザー登録' })
+    ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '拠点登録' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'ユーザー一覧' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'ユーザー一覧' })
+    ).toBeInTheDocument()
   })
 
   it('should have correct href attributes for links', () => {
     renderWithRouter(<HomePage />)
-    
-    expect(screen.getByRole('link', { name: 'ユーザー登録' })).toHaveAttribute('href', '/user-registration')
-    expect(screen.getByRole('link', { name: '拠点登録' })).toHaveAttribute('href', '/location-registration')
-    expect(screen.getByRole('link', { name: 'ユーザー一覧' })).toHaveAttribute('href', '/user-list')
+
+    expect(screen.getByRole('link', { name: 'ユーザー登録' })).toHaveAttribute(
+      'href',
+      '/user-registration'
+    )
+    expect(screen.getByRole('link', { name: '拠点登録' })).toHaveAttribute(
+      'href',
+      '/location-registration'
+    )
+    expect(screen.getByRole('link', { name: 'ユーザー一覧' })).toHaveAttribute(
+      'href',
+      '/user-list'
+    )
   })
 })
