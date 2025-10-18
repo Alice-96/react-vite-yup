@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
@@ -7,4 +7,4 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.ts'], // TypeScriptファイルのみ
   },
-} as any)
+})
