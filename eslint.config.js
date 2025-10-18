@@ -8,7 +8,7 @@ const react = require('eslint-plugin-react')
 
 module.exports = [
   {
-    ignores: ['dist', 'node_modules', '*.config.js', '*.config.ts']
+    ignores: ['dist', 'node_modules', 'public', '*.config.js', '*.config.ts']
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -22,7 +22,7 @@ module.exports = [
         sourceType: 'module',
       },
     },
-    settings: { react: { version: '17.0' } },
+    settings: { react: { version: '18.3' } },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
@@ -41,7 +41,6 @@ module.exports = [
       ],
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
-      'react/no-deprecated': 'off',
     },
   },
 ]

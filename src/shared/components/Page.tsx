@@ -9,8 +9,11 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
 
-const Page: React.FC = ({ children }) => {
-  console.log(children);
+interface PageProps {
+  children: React.ReactNode;
+}
+
+const Page: React.FC<PageProps> = ({ children }) => {
   return (
     <>
       <AppBar position="static">
