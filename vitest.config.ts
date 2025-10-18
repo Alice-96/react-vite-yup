@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   test: {
-    globals: true,
+    globals: false, // globalsを無効化
     environment: 'node',
     include: ['src/**/*.test.ts'], // TypeScriptファイルのみ
   },
