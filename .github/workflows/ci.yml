@@ -35,5 +35,8 @@ jobs:
       - name: Check Prettier formatting
         run: pnpm format:check
 
+      - name: Run tests
+        run: pnpm test:run
+
       - name: Build project
         run: pnpm build
