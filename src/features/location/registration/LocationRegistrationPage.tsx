@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import Page from '../../../shared/components/Page';
+import React, { useMemo } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import Page from '../../../shared/components/Page'
 import {
   Button,
   Stack,
@@ -11,12 +11,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from '@mui/material';
+} from '@mui/material'
 
 interface FormikValuesProps {
-  name: string;
-  type: string;
-  areaInfo: { area: string };
+  name: string
+  type: string
+  areaInfo: { area: string }
 }
 
 const LocationRegistrationPage: React.FC = () => {
@@ -32,8 +32,8 @@ const LocationRegistrationPage: React.FC = () => {
             area: Yup.string().required('エリアを入力してください'),
           }),
       }),
-    });
-  }, []);
+    })
+  }, [])
 
   const formik = useFormik<FormikValuesProps>({
     initialValues: {
@@ -43,7 +43,7 @@ const LocationRegistrationPage: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: () => {},
-  });
+  })
 
   return (
     <Page>
@@ -117,7 +117,7 @@ const LocationRegistrationPage: React.FC = () => {
         </Button>
       </Stack>
     </Page>
-  );
-};
+  )
+}
 
-export default LocationRegistrationPage;
+export default LocationRegistrationPage

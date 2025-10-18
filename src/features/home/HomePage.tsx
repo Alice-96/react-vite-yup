@@ -1,8 +1,8 @@
-import { Typography } from '@mui/material';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../../shared/styles/index.css';
-import Page from '../../shared/components/Page';
+import { Typography } from '@mui/material'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import '../../shared/styles/index.css'
+import Page from '../../shared/components/Page'
 
 const HomePage: React.FC = () => {
   return (
@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
     </Page>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

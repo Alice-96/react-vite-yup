@@ -1,0 +1,25 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "Installing pnpm..."
+        - npm install -g pnpm@9.12.0
+        - echo "Installing dependencies..."
+        - pnpm install --no-frozen-lockfile
+    build:
+      commands:
+        - echo "Running lint check..."
+        - pnpm lint
+        - echo "Running type check..."
+        - pnpm type-check
+        - echo "Building application..."
+        - pnpm build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - ~/.pnpm-store/**/*
