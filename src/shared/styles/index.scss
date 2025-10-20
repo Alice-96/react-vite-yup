@@ -1,0 +1,32 @@
+// Import SCSS partials
+@use './variables' as *;
+@use './mixins' as *;
+
+// Global styles
+body {
+  margin: 0;
+  font-family: $font-family-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: $font-family-monospace;
+}
+
+// Global utility classes
+.text-center {
+  text-align: center;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-column {
+  @include flex-column;
+}
+
+.flex-between {
+  @include flex-between;
+}
