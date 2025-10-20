@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import '../../shared/styles/index.css'
+import '../../shared/styles/index.scss'
 import Page from '../../shared/components/Page'
 
 const HomePage: React.FC = () => {

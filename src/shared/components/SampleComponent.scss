@@ -1,0 +1,104 @@
+// Sample component styles demonstrating SCSS features
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.sample-component {
+  @include card;
+  max-width: 400px;
+  margin: $spacing-lg auto;
+
+  &__header {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+    padding-bottom: $spacing-sm;
+    border-bottom: 1px solid lighten($primary-color, 40%);
+
+    &-title {
+      color: $primary-color;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    &-badge {
+      background-color: $success-color;
+      color: white;
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-lg;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+  }
+
+  &__content {
+    margin-bottom: $spacing-md;
+    line-height: 1.6;
+    color: darken($primary-color, 20%);
+
+    p {
+      margin: 0 0 $spacing-sm 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__actions {
+    @include flex-between;
+    gap: $spacing-sm;
+
+    .btn {
+      @include button-base;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      font-size: 0.875rem;
+
+      &--primary {
+        @include button-primary;
+      }
+
+      &--secondary {
+        background-color: transparent;
+        color: $primary-color;
+        border: 1px solid $primary-color;
+
+        &:hover {
+          background-color: $primary-color;
+          color: white;
+        }
+      }
+    }
+  }
+
+  // Responsive design
+  @include mobile {
+    margin: $spacing-sm;
+    padding: $spacing-md;
+
+    &__actions {
+      @include flex-column;
+      gap: $spacing-xs;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+
+  // Nested selector example
+  .status {
+    &--active {
+      color: $success-color;
+    }
+
+    &--inactive {
+      color: $error-color;
+    }
+
+    &--pending {
+      color: $warning-color;
+    }
+  }
+}
