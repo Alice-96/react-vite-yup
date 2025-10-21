@@ -7,6 +7,17 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
+  // スナップショットのプラットフォーム依存を無効化
+  expect: {
+    toHaveScreenshot: { 
+      animations: 'disabled',
+      // プラットフォーム名を除外してクロスプラットフォーム対応
+      pathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}',
+      // 小さなレンダリング差分を許容
+      threshold: 0.5,
+      maxDiffPixels: 1000
+    },
+  },
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',

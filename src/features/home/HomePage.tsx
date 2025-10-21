@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
           <Link to="/location-registration">拠点登録</Link>
         </div>
         <div>
-          <Link to="/user-list">ユーザー一覧</Link>
+          <Link to="/user-list">ユーザー一覧!</Link>
         </div>
       </div>
     </Page>
