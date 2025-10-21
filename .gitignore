@@ -29,3 +29,7 @@ memo.md
 # Environment variables
 .env.local
 .env.*.local
+
+# Package manager files (pnpm only)
+package-lock.json
+yarn.lock
