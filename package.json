@@ -22,6 +22,8 @@
     "test:vrt:report": "playwright show-report",
     "vrt:reg": "reg-cli --config regconfig.json",
     "vrt:capture": "pnpm build && pnpm preview & sleep 5 && pnpm test:vrt:update && kill %1",
+    "vrt:compare": "reg-cli visual-regression/actual visual-regression/expected visual-regression/diff --json visual-regression/report.json --report visual-regression/report.html",
+    "vrt:serve": "cd visual-regression && python3 -m http.server 8080",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",

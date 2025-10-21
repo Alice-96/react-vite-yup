@@ -11,7 +11,8 @@
     "threshold": 0.01,
     "ximgdiff": {
       "invocationType": "client"
-    }
+    },
+    "enableClientAddon": true
   },
   "plugins": {
     "reg-keygen-git-hash-plugin": {
@@ -21,6 +22,9 @@
     "reg-publish-s3-plugin": {
       "bucketName": "your-s3-bucket-name-for-screenshots"
     },
-    "reg-notify-github-plugin": {}
+    "reg-notify-github-plugin": {
+      "prComment": true,
+      "clientId": "github-actions"
+    }
   }
 }
