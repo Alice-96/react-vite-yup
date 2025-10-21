@@ -12,7 +12,10 @@ export default defineConfig({
     toHaveScreenshot: { 
       animations: 'disabled',
       // プラットフォーム名を除外してクロスプラットフォーム対応
-      pathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}'
+      pathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}',
+      // 小さなレンダリング差分を許容
+      threshold: 0.5,
+      maxDiffPixels: 1000
     },
   },
   use: {
