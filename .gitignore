@@ -33,3 +33,7 @@ memo.md
 # Package manager files (pnpm only)
 package-lock.json
 yarn.lock
+# VRT and test results
+playwright-report/
+test-results/
+visual-regression/
