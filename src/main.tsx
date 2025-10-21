@@ -3,7 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 import './shared/styles/index.scss'
-import { reportWebVitals, logWebVitals, sendToAnalytics } from './shared/utils/webVitals'
+import {
+  reportWebVitals,
+  logWebVitals,
+  sendToAnalytics,
+} from './shared/utils/webVitals'
 
 // Optimize QueryClient for better performance
 const queryClient = new QueryClient({

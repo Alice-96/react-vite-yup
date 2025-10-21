@@ -13,7 +13,7 @@ interface Metric {
   navigationType: string
 }
 
-const reportWebVitals = (onPerfEntry?: (metric: Metric) => void) => {
+const reportWebVitals = (onPerfEntry?: (_: Metric) => void) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     onCLS(onPerfEntry)
     onINP(onPerfEntry) // INP replaces FID in web-vitals v3+

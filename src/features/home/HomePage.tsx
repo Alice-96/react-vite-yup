@@ -14,26 +14,16 @@ const navigationLinks = [
 const HomePage: React.FC = memo(() => {
   return (
     <Page>
-      <Typography 
-        component="h1" 
-        variant="h4" 
-        color="primary"
-        sx={{ mb: 3 }}
-      >
+      <Typography component="h1" variant="h4" color="primary" sx={{ mb: 3 }}>
         ホーム
       </Typography>
-      <Typography 
-        component="h2" 
-        variant="h6" 
-        color="primary"
-        sx={{ mb: 2 }}
-      >
+      <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
         メニュー
       </Typography>
       <nav role="navigation" aria-label="メインナビゲーション">
         {navigationLinks.map(({ to, label }) => (
           <div key={to} style={{ marginBottom: '16px' }}>
-            <Link 
+            <Link
               to={to}
               style={{
                 textDecoration: 'none',

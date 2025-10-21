@@ -34,6 +34,7 @@ export default [
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
+      'no-unused-vars': 'off', // Disable base rule
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'react-refresh/only-export-components': [
         'warn',

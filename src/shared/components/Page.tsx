@@ -26,9 +26,9 @@ const Page: React.FC<PageProps> = memo(({ children }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography 
-            variant="h6" 
-            color="inherit" 
+          <Typography
+            variant="h6"
+            color="inherit"
             component="h1"
             sx={{ flexGrow: 1 }}
           >
@@ -36,11 +36,7 @@ const Page: React.FC<PageProps> = memo(({ children }) => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container 
-        maxWidth="lg" 
-        sx={{ mt: 4, mb: 4 }}
-        component="main"
-      >
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }} component="main">
         <Paper
           sx={{
             p: 3,
