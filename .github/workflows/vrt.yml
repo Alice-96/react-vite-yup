@@ -1,0 +1,211 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main ]
+
+jobs:
+  vrt:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Run VRT tests
+        continue-on-error: true
+        id: vrt-test
+        run: |
+          pnpm test:vrt
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Upload test results and screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vrt-test-results-${{ github.run_number }}
+          path: |
+            test-results/
+            playwright-report/
+            vrt/**/*-snapshots/
+          retention-days: 7
+
+      - name: Analyze test results
+        if: github.event_name == 'pull_request'
+        id: analyze
+        run: |
+          # Playwrightの結果を解析
+          if [ -d "test-results" ]; then
+            FAILED_TESTS=$(find test-results -name "*.png" -path "*/test-failed-*" | wc -l)
+            DIFF_IMAGES=$(find test-results -name "*-diff.png" | wc -l)
+            ACTUAL_IMAGES=$(find test-results -name "*-actual.png" | wc -l)
+            
+            echo "failed_tests=$FAILED_TESTS" >> $GITHUB_OUTPUT
+            echo "diff_images=$DIFF_IMAGES" >> $GITHUB_OUTPUT
+            echo "actual_images=$ACTUAL_IMAGES" >> $GITHUB_OUTPUT
+            
+            # 差分があるかどうかを判定
+            if [ "$DIFF_IMAGES" -gt 0 ]; then
+              echo "has_differences=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_differences=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "failed_tests=0" >> $GITHUB_OUTPUT
+            echo "diff_images=0" >> $GITHUB_OUTPUT
+            echo "actual_images=0" >> $GITHUB_OUTPUT
+            echo "has_differences=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate diff report
+        if: github.event_name == 'pull_request' && steps.analyze.outputs.has_differences == 'true'
+        id: diff-report
+        run: |
+          # 差分画像の詳細リストを生成
+          if [ -d "test-results" ]; then
+            echo "## 🖼️ Screenshot Differences" > diff_report.md
+            echo "" >> diff_report.md
+            
+            # 各差分画像についてレポート生成
+            find test-results -name "*-diff.png" | while read -r diff_file; do
+              # ファイル名から情報を抽出
+              base_name=$(basename "$diff_file" -diff.png)
+              test_name=$(echo "$base_name" | sed 's/-[^-]*-[^-]*$//')
+              
+              echo "### 📸 $test_name" >> diff_report.md
+              echo "**Difference detected in:** \`$base_name\`" >> diff_report.md
+              echo "" >> diff_report.md
+            done
+            
+            echo "diff_report_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "diff_report_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment PR with VRT results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const { failed_tests, diff_images, actual_images, has_differences } = ${{ toJson(steps.analyze.outputs) }};
+            const exitCode = '${{ steps.vrt-test.outputs.exit_code }}';
+            const diffReportExists = '${{ steps.diff-report.outputs.diff_report_exists }}' || 'false';
+            
+            let comment = '## 📸 Visual Regression Test Results\n\n';
+            
+            // テスト実行結果のサマリー
+            if (exitCode === '0') {
+              comment += '✅ **All visual tests passed - No differences detected**\n\n';
+            } else if (has_differences === 'true') {
+              comment += `❌ **Visual differences detected**\n\n`;
+              comment += `### 📊 Summary\n`;
+              comment += `- Screenshots with differences: ${diff_images}\n`;
+              comment += `- Updated screenshots: ${actual_images}\n`;
+              comment += `- Failed test scenarios: ${failed_tests}\n\n`;
+              
+              // 差分レポートがある場合は含める
+              if (diffReportExists === 'true') {
+                try {
+                  const diffReport = fs.readFileSync('diff_report.md', 'utf8');
+                  comment += diffReport + '\n';
+                } catch (error) {
+                  console.log('Could not read diff report:', error);
+                }
+              }
+              
+              comment += `### 🔍 What to do next:\n`;
+              comment += `1. 📥 [Download test results](../actions/runs/${context.runId}) to view diff images\n`;
+              comment += `2. 🔍 Review the differences to ensure changes are intentional\n`;
+              comment += `3. ✅ If changes are correct, update baselines:\n`;
+              comment += `   \`\`\`bash\n   pnpm test:vrt:update\n   git add vrt/\n   git commit -m "Update VRT baselines"\n   \`\`\`\n\n`;
+            } else {
+              comment += `⚠️ **Tests failed but no visual differences detected**\n\n`;
+              comment += `This might indicate a test setup or execution issue.\n`;
+              comment += `Please check the test logs for more information.\n\n`;
+            }
+            
+            // テスト詳細情報
+            comment += `### 📋 Test Details\n`;
+            comment += `- **Branch**: \`${context.payload.pull_request.head.ref}\`\n`;
+            comment += `- **Commit**: \`${context.payload.pull_request.head.sha.substring(0, 7)}\`\n`;
+            comment += `- **Test Runner**: Playwright\n`;
+            comment += `- **Browser**: Chromium\n`;
+            comment += `- **Run ID**: \`${context.runId}\`\n\n`;
+            
+            comment += `<details>\n`;
+            comment += `<summary>🔧 Troubleshooting Guide</summary>\n\n`;
+            comment += `**Common causes of visual differences:**\n`;
+            comment += `- Font rendering differences between environments\n`;
+            comment += `- Browser version updates\n`;
+            comment += `- CSS changes affecting layout or styling\n`;
+            comment += `- Dynamic content (dates, random data, loading states)\n`;
+            comment += `- Animation timing issues\n\n`;
+            comment += `**How to fix:**\n`;
+            comment += `1. 🏠 Run tests locally: \`pnpm test:vrt\`\n`;
+            comment += `2. 🐛 Debug with UI mode: \`pnpm test:vrt:ui\`\n`;
+            comment += `3. 📊 View HTML report: \`pnpm test:vrt:report\`\n`;
+            comment += `4. ✅ Update baselines if changes are intentional: \`pnpm test:vrt:update\`\n`;
+            comment += `5. 📸 Check specific pages that changed\n\n`;
+            comment += `**Test Pages:**\n`;
+            comment += `- 🏠 Home page (\`/\`)\n`;
+            comment += `- 👤 User registration (\`/user-registration\`)\n`;
+            comment += `- 🏢 Location registration (\`/location-registration\`)\n`;
+            comment += `- 📋 User list (\`/user-list\`)\n`;
+            comment += `</details>\n`;
+            
+            // 既存のコメントを検索して更新
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const existingComment = comments.find(comment => 
+              comment.body.includes('📸 Visual Regression Test Results')
+            );
+            
+            if (existingComment) {
+              // 既存のコメントを更新
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            } else {
+              // 新しいコメントを作成
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
