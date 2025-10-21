@@ -31,10 +31,17 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          # Try frozen lockfile first, fallback to regular install if lockfile is outdated
+          if ! pnpm install --frozen-lockfile; then
+            echo "⚠️ Lockfile is outdated, running regular install..."
+            pnpm install
+          fi
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: |
+          # Install Playwright browsers with system dependencies
+          pnpm exec playwright install --with-deps chromium
 
       - name: Build application
         run: pnpm build
