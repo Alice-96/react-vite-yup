@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import { CircularProgress, Box } from '@mui/material'
-import { HomePage } from './features'
 
-// Lazy load components for code splitting
+// Lazy load ALL components for optimal code splitting
+const HomePage = lazy(() => import('./features/home/HomePage'))
 const UserListPage = lazy(() => import('./features/userList/UserListPage'))
 const UserRegistrationPage = lazy(
   () => import('./features/user/registration/UserRegistrationPage')
@@ -12,15 +12,17 @@ const LocationRegistrationPage = lazy(
   () => import('./features/location/registration/LocationRegistrationPage')
 )
 
-// Loading fallback component
+// Optimized loading fallback component
 const LoadingFallback = () => (
   <Box
     display="flex"
     justifyContent="center"
     alignItems="center"
     minHeight="200px"
+    role="status"
+    aria-label="コンテンツを読み込み中"
   >
-    <CircularProgress />
+    <CircularProgress size={40} />
   </Box>
 )
 
