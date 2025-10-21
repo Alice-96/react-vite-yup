@@ -2,6 +2,19 @@
 
 A React application with Vite for trying out Yup validation with Formik, organized using a **feature-based architecture**.
 
+## ⚠️ 重要: パッケージマネージャーについて
+
+このプロジェクトでは **pnpm** の使用が必須です。
+
+```bash
+# ✅ 正しい方法
+pnpm install
+pnpm dev
+pnpm build
+
+yarn install # エラーになります
+```
+
 ## Features
 
 - **Basic Validation**: Simple form validation with Yup and Formik
