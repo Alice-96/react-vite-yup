@@ -74,3 +74,27 @@ pnpm preview
 - **Scalability**: Easy to add new features without affecting existing ones
 - **Maintainability**: Clear separation of concerns and organized code structure
 - **Reusability**: Shared components and utilities in the `shared` directory
+
+## Testing
+
+### Visual Regression Testing (VRT)
+
+このプロジェクトでは、Playwright + reg-suitを使用してVRTを実装しています。
+
+```bash
+# VRTテストを実行
+pnpm test:vrt
+
+# スクリーンショットを更新
+pnpm test:vrt:update
+
+# UIモードでデバッグ
+pnpm test:vrt:ui
+
+# HTMLレポートを表示
+pnpm test:vrt:report
+```
+
+詳細は以下のドキュメントを参照してください：
+- **[VRT_GUIDE.md](./VRT_GUIDE.md)** - VRTの使い方と開発ワークフロー
+- **[VRT_S3_SETUP.md](./VRT_S3_SETUP.md)** - AWS S3統合のセットアップ手順

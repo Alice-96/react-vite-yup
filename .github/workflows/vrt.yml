@@ -41,7 +41,7 @@ jobs:
       - name: Install Playwright browsers
         run: |
           # Install Playwright browsers with system dependencies
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps chromium firefox webkit
 
       - name: Build application
         run: pnpm build
@@ -53,6 +53,25 @@ jobs:
           pnpm test:vrt
           echo "exit_code=$?" >> $GITHUB_OUTPUT
 
+      - name: Run reg-suit
+        continue-on-error: true
+        if: github.event_name == 'pull_request'
+        id: reg-suit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+        run: |
+          # reg-suitで差分を検出・レポート生成
+          REG_OUTPUT=$(pnpm vrt:reg 2>&1 || true)
+          echo "$REG_OUTPUT"
+
+          # レポートURLを抽出
+          REPORT_URL=$(echo "$REG_OUTPUT" | grep -oP 'http[s]?://[^\s]+' | tail -1 || echo "")
+          echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
+
       - name: Upload test results and screenshots
         uses: actions/upload-artifact@v4
         if: always()
@@ -62,6 +81,7 @@ jobs:
             test-results/
             playwright-report/
             vrt/**/*-snapshots/
+            visual-regression/
           retention-days: 7
 
       - name: Analyze test results
@@ -125,9 +145,17 @@ jobs:
             const { failed_tests, diff_images, actual_images, has_differences } = ${{ toJson(steps.analyze.outputs) }};
             const exitCode = '${{ steps.vrt-test.outputs.exit_code }}';
             const diffReportExists = '${{ steps.diff-report.outputs.diff_report_exists }}' || 'false';
-            
+            const regSuitReportUrl = '${{ steps.reg-suit.outputs.report_url }}';
+
             let comment = '## 📸 Visual Regression Test Results\n\n';
-            
+
+            // reg-suitレポートURLがある場合は最上部に表示
+            if (regSuitReportUrl && regSuitReportUrl !== '') {
+              comment += `### 🔗 [View Visual Diff Report on S3](${regSuitReportUrl})\n\n`;
+              comment += '**reg-suit**により、差分の詳細をS3上のインタラクティブなレポートで確認できます。\n\n';
+              comment += '---\n\n';
+            }
+
             // テスト実行結果のサマリー
             if (exitCode === '0') {
               comment += '✅ **All visual tests passed - No differences detected**\n\n';
@@ -137,7 +165,7 @@ jobs:
               comment += `- Screenshots with differences: ${diff_images}\n`;
               comment += `- Updated screenshots: ${actual_images}\n`;
               comment += `- Failed test scenarios: ${failed_tests}\n\n`;
-              
+
               // 差分レポートがある場合は含める
               if (diffReportExists === 'true') {
                 try {
@@ -147,11 +175,16 @@ jobs:
                   console.log('Could not read diff report:', error);
                 }
               }
-              
+
               comment += `### 🔍 What to do next:\n`;
-              comment += `1. 📥 [Download test results](../actions/runs/${context.runId}) to view diff images\n`;
-              comment += `2. 🔍 Review the differences to ensure changes are intentional\n`;
-              comment += `3. ✅ If changes are correct, update baselines:\n`;
+              if (regSuitReportUrl && regSuitReportUrl !== '') {
+                comment += `1. 🌐 [View interactive diff report on S3](${regSuitReportUrl})\n`;
+                comment += `2. 📥 [Download test results](../actions/runs/${context.runId}) to view diff images locally\n`;
+              } else {
+                comment += `1. 📥 [Download test results](../actions/runs/${context.runId}) to view diff images\n`;
+              }
+              comment += `${regSuitReportUrl ? '3' : '2'}. 🔍 Review the differences to ensure changes are intentional\n`;
+              comment += `${regSuitReportUrl ? '4' : '3'}. ✅ If changes are correct, update baselines:\n`;
               comment += `   \`\`\`bash\n   pnpm test:vrt:update\n   git add vrt/\n   git commit -m "Update VRT baselines"\n   \`\`\`\n\n`;
             } else {
               comment += `⚠️ **Tests failed but no visual differences detected**\n\n`;
