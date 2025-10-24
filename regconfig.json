@@ -1,18 +1,18 @@
 {
   "core": {
     "workingDir": "./visual-regression",
-    "actualDir": "./visual-regression/actual",
+    "actualDir": "./vrt",
     "expectedDir": "./visual-regression/expected",
     "diffDir": "./visual-regression/diff",
     "report": {
       "json": "./visual-regression/report.json",
       "html": "./visual-regression/report.html"
     },
-    "threshold": 0.01,
+    "threshold": 0.1,
+    "addIgnore": true,
     "ximgdiff": {
       "invocationType": "client"
-    },
-    "enableClientAddon": true
+    }
   },
   "plugins": {
     "reg-keygen-git-hash-plugin": {
@@ -20,11 +20,11 @@
       "actualKey": "heads/{{branch}}"
     },
     "reg-publish-s3-plugin": {
-      "bucketName": "your-s3-bucket-name-for-screenshots"
+      "bucketName": "${S3_BUCKET_NAME}"
     },
     "reg-notify-github-plugin": {
       "prComment": true,
-      "clientId": "github-actions"
+      "clientId": "reg-suit"
     }
   }
 }

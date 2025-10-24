@@ -37,3 +37,4 @@ yarn.lock
 playwright-report/
 test-results/
 visual-regression/
+# Note: vrt/**/*-snapshots/ should be committed as baselines
