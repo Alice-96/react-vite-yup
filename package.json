@@ -20,7 +20,8 @@
     "test:vrt:ui": "playwright test --ui",
     "test:vrt:update": "playwright test --update-snapshots",
     "test:vrt:report": "playwright show-report",
-    "vrt:reg": "reg-cli --config regconfig.json",
+    "vrt:prepare": "bash scripts/prepare-vrt-images.sh",
+    "vrt:reg": "pnpm vrt:prepare && reg-suit run",
     "vrt:capture": "pnpm build && pnpm preview & sleep 5 && pnpm test:vrt:update && kill %1",
     "vrt:compare": "reg-cli visual-regression/actual visual-regression/expected visual-regression/diff --json visual-regression/report.json --report visual-regression/report.html",
     "vrt:serve": "cd visual-regression && python3 -m http.server 8080",
@@ -43,6 +44,7 @@
     "prettier": "^2.8.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "web-vitals": "^5.1.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -66,10 +68,13 @@
     "puppeteer": "^24.25.0",
     "react-router-dom": "^6.30.1",
     "reg-cli": "^0.18.10",
+    "reg-keygen-git-hash-plugin": "^0.14.5",
     "reg-notify-github-plugin": "^0.14.5",
+    "reg-publish-gcs-plugin": "^0.14.4",
     "reg-publish-s3-plugin": "^0.14.4",
     "reg-suit": "^0.14.5",
     "sass": "^1.93.2",
+    "storycap": "^5.0.1",
     "typescript": "^5.9.3",
     "vite": "^5.4.20",
     "vitest": "^3.2.4"
