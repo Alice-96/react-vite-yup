@@ -292,7 +292,10 @@ reg-suitがエラーで失敗すると、コメントが投稿されません。
 ローカル環境でreg-suitの動作を確認したい場合：
 
 ```bash
-# 環境変数を設定
+# 1. VRTテストを実行
+pnpm test:vrt
+
+# 2. 環境変数を設定
 export GITHUB_TOKEN=your-github-token
 export CI_PULL_REQUEST=123
 export CI_REPO_OWNER=your-username
@@ -302,11 +305,17 @@ export AWS_SECRET_ACCESS_KEY=your-secret-key
 export AWS_REGION=ap-northeast-1
 export S3_BUCKET_NAME=your-bucket-name
 
-# reg-suitを実行
+# 3. reg-suitを実行
 pnpm vrt:reg
+
+# または、ステップごとに実行
+pnpm vrt:prepare    # スナップショットを準備
+npx reg-suit run    # reg-suitを実行
 ```
 
-**注意:** ローカルで実行すると、実際にPRにコメントが投稿されます。テスト用のPRを使用することを推奨します。
+**注意:**
+- ローカルで実行すると、実際にPRにコメントが投稿されます。テスト用のPRを使用することを推奨します。
+- S3にも実際にアップロードされます。
 
 ## 高度な設定
 

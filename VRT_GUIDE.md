@@ -92,11 +92,13 @@ pnpm test:vrt:report
 
 | コマンド | 説明 |
 |----------|------|
-| `pnpm test:vrt` | VRTテストを実行 |
+| `pnpm test:vrt` | VRTテストを実行（Playwright） |
 | `pnpm test:vrt:update` | スクリーンショットを更新（意図的な変更後） |
 | `pnpm test:vrt:ui` | UIモードでテスト実行（デバッグに便利） |
-| `pnpm test:vrt:report` | HTMLレポートを表示 |
-| `pnpm vrt:reg` | reg-suitで差分検出・レポート生成 |
+| `pnpm test:vrt:report` | HTMLレポートを表示（Playwright） |
+| `pnpm vrt:prepare` | Playwrightのスナップショットをreg-suit用に準備 |
+| `pnpm vrt:reg` | reg-suitで差分検出・レポート生成・PRコメント投稿 |
+| `npx reg-suit run` | reg-suitを直接実行（vrt:prepareの後に実行） |
 | `pnpm vrt:capture` | ビルド→スクリーンショット生成の一連の流れを実行 |
 
 ### テストファイルの構成
@@ -233,6 +235,30 @@ npx playwright test home.spec.ts
 # 特定のテストファイルのスナップショットを更新
 npx playwright test home.spec.ts --update-snapshots
 ```
+
+### ローカルでreg-suitを実行
+
+ローカル環境でreg-suitを実行して、S3上のレポートを確認できます：
+
+```bash
+# 1. VRTテストを実行（スナップショットを生成）
+pnpm test:vrt
+
+# 2. 環境変数を設定（.env.localまたはexport）
+export AWS_ACCESS_KEY_ID=your-access-key-id
+export AWS_SECRET_ACCESS_KEY=your-secret-access-key
+export AWS_REGION=ap-northeast-1
+export S3_BUCKET_NAME=your-bucket-name
+
+# 3. reg-suitを実行
+pnpm vrt:reg
+
+# または直接実行
+pnpm vrt:prepare  # スナップショットを準備
+npx reg-suit run  # reg-suitを実行
+```
+
+**注意**: ローカルで実行すると、実際にS3にアップロードされます。テスト用のS3バケットを使用することを推奨します。
 
 ## CI/CDでの活用
 

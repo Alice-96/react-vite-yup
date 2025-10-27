@@ -96,6 +96,7 @@ pnpm test:vrt:report
 ```
 
 詳細は以下のドキュメントを参照してください：
-- **[VRT_GUIDE.md](./VRT_GUIDE.md)** - VRTの使い方と開発ワークフロー
+- **[VRT_USAGE_GUIDE.md](./VRT_USAGE_GUIDE.md)** - 🚀 VRTの使い方（初めての方向け）
+- **[VRT_GUIDE.md](./VRT_GUIDE.md)** - VRTの詳細ガイドと設定
 - **[VRT_S3_SETUP.md](./VRT_S3_SETUP.md)** - AWS S3統合のセットアップ手順
-- **[VRT_REG_SUIT_BOT.md](./VRT_REG_SUIT_BOT.md)** - reg-suit botによる自動PR コメント投稿
+- **[VRT_REG_SUIT_BOT.md](./VRT_REG_SUIT_BOT.md)** - reg-suit botによる自動PRコメント投稿

@@ -37,4 +37,7 @@ yarn.lock
 playwright-report/
 test-results/
 visual-regression/
+.reg/
+.reg-suit/
+vrt-images/
 # Note: vrt/**/*-snapshots/ should be committed as baselines

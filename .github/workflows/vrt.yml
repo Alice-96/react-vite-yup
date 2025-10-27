@@ -53,6 +53,12 @@ jobs:
           pnpm test:vrt
           echo "exit_code=$?" >> $GITHUB_OUTPUT
 
+      - name: Prepare VRT images for reg-suit
+        if: github.event_name == 'pull_request'
+        run: |
+          # Playwrightのスナップショットをreg-suit用に準備
+          pnpm vrt:prepare
+
       - name: Run reg-suit
         continue-on-error: true
         if: github.event_name == 'pull_request'
@@ -71,19 +77,30 @@ jobs:
           CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
           CI_BRANCH: ${{ github.head_ref }}
         run: |
-          # reg-suitで差分を検出・レポート生成・PRコメント投稿
-          REG_OUTPUT=$(pnpm vrt:reg 2>&1 || true)
+          # reg-suit runで差分を検出・レポート生成・PRコメント投稿
+          echo "🚀 Running reg-suit..."
+          REG_OUTPUT=$(npx reg-suit run 2>&1 || true)
           echo "$REG_OUTPUT"
 
-          # レポートURLを抽出
-          REPORT_URL=$(echo "$REG_OUTPUT" | grep -oP 'http[s]?://[^\s]+' | tail -1 || echo "")
+          # レポートURLを抽出（"Published" の後のURL）
+          REPORT_URL=$(echo "$REG_OUTPUT" | grep -oP 'Published.*?(http[s]?://[^\s]+)' | grep -oP 'http[s]?://[^\s]+' || echo "")
+
+          # 別パターンも試す
+          if [ -z "$REPORT_URL" ]; then
+            REPORT_URL=$(echo "$REG_OUTPUT" | grep -oP 'Report URL.*?(http[s]?://[^\s]+)' | grep -oP 'http[s]?://[^\s]+' || echo "")
+          fi
+
           echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
 
+          if [ -n "$REPORT_URL" ]; then
+            echo "📊 Report URL: $REPORT_URL"
+          fi
+
           # reg-suitの実行結果を確認
-          if echo "$REG_OUTPUT" | grep -q "Posted"; then
-            echo "✅ reg-suit bot successfully posted PR comment"
+          if echo "$REG_OUTPUT" | grep -qE "(Posted|Comment|Success)"; then
+            echo "✅ reg-suit successfully completed"
           else
-            echo "⚠️ reg-suit bot may not have posted PR comment"
+            echo "⚠️ reg-suit may have encountered issues"
           fi
 
       - name: Upload test results and screenshots
