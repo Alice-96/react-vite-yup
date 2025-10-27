@@ -24,7 +24,11 @@
     },
     "reg-notify-github-plugin": {
       "prComment": true,
-      "clientId": "reg-suit"
+      "prCommentBehavior": "default",
+      "clientId": "reg-suit[bot]",
+      "customEndpoint": "",
+      "setCommitStatus": true,
+      "statusContext": "reg-suit"
     }
   }
 }

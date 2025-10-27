@@ -264,6 +264,18 @@ https://console.aws.amazon.com/
 - ✅ AWS_REGION
 - ✅ S3_BUCKET_NAME
 
+### 3.4 GitHub Actionsの権限設定
+
+reg-suit botがPRにコメントを投稿するために、GitHub Actionsの権限を設定します。
+
+1. GitHubリポジトリの **Settings** → **Actions** → **General** を開く
+2. **Workflow permissions** セクションで以下を設定：
+   - ✅ **"Read and write permissions"** を選択
+   - ✅ **"Allow GitHub Actions to create and approve pull requests"** にチェック
+3. **Save** をクリック
+
+この設定により、GitHub ActionsがPRにコメントを投稿できるようになります。
+
 ## 手順4: 動作確認
 
 ### 4.1 ベースラインスクリーンショットの生成
@@ -302,10 +314,14 @@ git push origin test-vrt-setup
 
 1. PRページの「Checks」タブを確認
 2. 「Visual Regression Tests」ワークフローが実行されることを確認
-3. 実行完了後、PRコメントに以下が表示されることを確認：
-   - ✅ VRTテスト結果のサマリー
+3. 実行完了後、**reg-suit[bot]** がPRコメントを投稿することを確認：
+   - ✅ VRTテスト結果のサマリー統計
+   - 📊 差分画像のインライン表示
+   - 🎨 インタラクティブなスライダー
    - 🔗 S3上のレポートへのリンク（差分がある場合）
-   - 📊 差分の詳細
+   - 📈 コミットステータスチェック
+
+> 💡 **Note**: reg-suit botの詳細については [VRT_REG_SUIT_BOT.md](./VRT_REG_SUIT_BOT.md) を参照してください。
 
 ### 4.4 S3レポートの確認
 

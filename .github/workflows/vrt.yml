@@ -63,14 +63,28 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+          # reg-notify-github-plugin用の環境変数
+          CI_PULL_REQUEST: ${{ github.event.pull_request.number }}
+          CI_REPO_OWNER: ${{ github.repository_owner }}
+          CI_REPO_NAME: ${{ github.event.repository.name }}
+          CI_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          CI_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          CI_BRANCH: ${{ github.head_ref }}
         run: |
-          # reg-suitで差分を検出・レポート生成
+          # reg-suitで差分を検出・レポート生成・PRコメント投稿
           REG_OUTPUT=$(pnpm vrt:reg 2>&1 || true)
           echo "$REG_OUTPUT"
 
           # レポートURLを抽出
           REPORT_URL=$(echo "$REG_OUTPUT" | grep -oP 'http[s]?://[^\s]+' | tail -1 || echo "")
           echo "report_url=$REPORT_URL" >> $GITHUB_OUTPUT
+
+          # reg-suitの実行結果を確認
+          if echo "$REG_OUTPUT" | grep -q "Posted"; then
+            echo "✅ reg-suit bot successfully posted PR comment"
+          else
+            echo "⚠️ reg-suit bot may not have posted PR comment"
+          fi
 
       - name: Upload test results and screenshots
         uses: actions/upload-artifact@v4
@@ -136,7 +150,7 @@ jobs:
             echo "diff_report_exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Comment PR with VRT results
+      - name: Comment PR with VRT results (Fallback)
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
@@ -147,13 +161,13 @@ jobs:
             const diffReportExists = '${{ steps.diff-report.outputs.diff_report_exists }}' || 'false';
             const regSuitReportUrl = '${{ steps.reg-suit.outputs.report_url }}';
 
-            let comment = '## 📸 Visual Regression Test Results\n\n';
+            // reg-suit botが詳細なコメントを投稿するため、このコメントは補足情報のみ
+            let comment = '## 📸 Visual Regression Test Results (Summary)\n\n';
+            comment += '> 💡 **Note**: Detailed visual diff report with images has been posted by reg-suit[bot] below.\n\n';
 
             // reg-suitレポートURLがある場合は最上部に表示
             if (regSuitReportUrl && regSuitReportUrl !== '') {
-              comment += `### 🔗 [View Visual Diff Report on S3](${regSuitReportUrl})\n\n`;
-              comment += '**reg-suit**により、差分の詳細をS3上のインタラクティブなレポートで確認できます。\n\n';
-              comment += '---\n\n';
+              comment += `### 🔗 [View Interactive Report on S3](${regSuitReportUrl})\n\n`;
             }
 
             // テスト実行結果のサマリー
