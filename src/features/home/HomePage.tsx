@@ -6,9 +6,9 @@ import Page from '../../shared/components/Page'
 
 // Navigation links data for better maintainability
 const navigationLinks = [
-  { to: '/user-registration', label: 'ユーザー登録!' },
-  { to: '/location-registration', label: '拠点登録!' },
-  { to: '/user-list', label: 'ユーザー一覧!' },
+  { to: '/user-registration', label: '👤ユーザー登録' },
+  { to: '/location-registration', label: '🏢拠点登録' },
+  { to: '/user-list', label: '📋ユーザー一覧' },
 ] as const
 
 const HomePage: React.FC = memo(() => {
